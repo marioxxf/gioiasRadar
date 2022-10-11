@@ -1,4 +1,9 @@
-﻿/* Início Select do Bootstrap 5.0 */
+﻿@font-face {
+    font-family: 'roboto-regular';
+    src: url('roboto/roboto-regular.ttf') format('truetype');
+}
+
+/* Início Select do Bootstrap 5.0 */
     .form-select {
     display: block;
     width: 100%;
@@ -18,6 +23,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    font-family: "roboto-regular", Verdana;
 }
 
 select {
@@ -32,7 +38,7 @@ select {
     font-weight:;
     font-stretch:;
     font-size:;
-    font-family:;
+    font-family: "roboto-regular", Verdana;
     text-rendering: auto;
     color: fieldtext;
     letter-spacing: normal;
@@ -78,22 +84,53 @@ select {
 
 /* Fim Accordion do Bootstrap 5.0 */
 
+#map {
+    height: 600px;
+    width: 85%;
+    margin: auto;
+    margin-bottom: 50px;
+    border-radius: 25px;
+}
+
 .main {
+    margin-bottom: 50px;
     color: #337ab7;
+    font-family: "roboto-regular", Verdana;
 }
 
 .subtitle {
     color: #333333;
     font-weight: bold;
+    font-family: "roboto-regular", Verdana;
+}
+
+.velIdeal {
+    color: #9d9d9d;
+    font-family: "roboto-regular", Verdana;
+    font-size: 28px;
+}
+
+.velIdealTitle {
+    color: #333333;
+    font-family: "roboto-regular", Verdana;
+    font-size: 28px;
+}
+
+.velIdealSpan {
+    color: #9d9d9d;
+    font-family: "roboto-regular", Verdana;
+    font-size: 19px;
 }
 
 .locationRadarData {
     margin-top: 25px;
     color: #333333;
+    font-family: "roboto-regular", Verdana;
 }
 
 .infoRadarData {
     color: #333333;
+    font-family: "roboto-regular", Verdana;
 }
 
 .btNnewOcc {
@@ -103,4 +140,9 @@ select {
 
 .headerOccTable {
     font-weight: bold;
+}
+
+.occDataTable {
+    color: #333333;
+    font-family: "roboto-regular", Verdana;
 }

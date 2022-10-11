@@ -26,23 +26,7 @@
 <!-- Make sure you put this AFTER Leaflet's CSS -->
 <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin="">
-</script>
-
-<style>
-    #map {
-        height: 600px;
-        width: 85%;
-        margin: auto;
-        margin-bottom: 50px;
-        border-radius: 25px;
-    }
-
-    .main {
-        margin-bottom: 50px;
-        color: #337ab7;
-    }
-</style>
+        crossorigin=""></script>
 
 <input type="text" id="qtdLocais" name="qtdLocais" value="@qtdLocais" style="display:none;" />
 
@@ -106,7 +90,7 @@
                 var perfilDoRadar = "radar/perfil/" + document.getElementById('radarId/' + i).value;
                 var marcador = L.marker([latitude, longitude]).addTo(map);
                 console.log(latitude + "," + longitude);
-                marcador.bindPopup("<div style='font-size: 14px;'><ce   nter><b>Radar: </b>" + radarName + "<br><b>Mais informações</b>: <a target='_self' href='" + perfilDoRadar + "'>Acesso ao perfil</a></center></div>").openPopup();
+                marcador.bindPopup("<div style='font-size: 14px; font-family: 'roboto-regular', Verdana;'><center><b>Radar: </b>" + radarName + "<br><b>Mais informações</b>: <a target='_self' href='" + perfilDoRadar + "'>Acesso ao perfil</a></center></div>").openPopup();
             }
         });
     });

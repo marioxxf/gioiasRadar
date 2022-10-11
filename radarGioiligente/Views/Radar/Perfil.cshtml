@@ -33,7 +33,7 @@
     @{
         if (velocidadeIdeal.velocidade.Length > 0 && velocidadeIdeal.velocidade != "")
         {
-            <h2>Velocidade ideal: <label style="color: #9d9d9d; font-size: 28px;">@velocidadeIdeal.velocidade</label><span style="color: #9d9d9d; font-size: 19px; ">km/h</span></h2>
+            <h2 class="velIdealTitle">Velocidade ideal: <label class="velIdeal">@velocidadeIdeal.velocidade</label><span class="velIdealSpan">km/h</span></h2>
         }
         else
         {
@@ -63,7 +63,7 @@
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <table class="table table-striped" id="occTable" name="occTable">
+                    <table class="table table-striped occDataTable" id="occTable" name="occTable">
                         <tr class="headerOccTable">
                             <td>Data da ocorrência</td>
                             <td>Data da criação da ocorrência</td>
