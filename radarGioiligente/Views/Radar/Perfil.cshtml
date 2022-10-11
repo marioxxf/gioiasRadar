@@ -79,6 +79,7 @@
                             foreach (var occurrence in occurrences)
                             {
                                 System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("pt-BR");
+                                cultureinfo = System.Threading.Thread.CurrentThread.CurrentCulture;
                                 var dtOcorrencia = DateTime.Parse(occurrence.dataOcorrencia, cultureinfo);
                                 string dtOcorrenciaFinal = dtOcorrencia.ToString("dd/M/yyyy", cultureinfo);
                                 string hrOcorrenciaFinal = dtOcorrencia.ToString("HH:mm", cultureinfo);
