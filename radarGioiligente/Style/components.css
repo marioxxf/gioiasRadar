@@ -94,8 +94,22 @@ select {
 
 .main {
     margin-bottom: 50px;
+    margin-top: 45px;
     color: #337ab7;
     font-family: "roboto-regular", Verdana;
+}
+
+.gioiaBar {
+    background-color: yellow;
+}
+
+.liNavBar {
+    color: white;
+}
+
+a.liNavBar:hover {
+    transition: all .1s ease-in-out;
+    font-size: 150%;
 }
 
 .subtitle {

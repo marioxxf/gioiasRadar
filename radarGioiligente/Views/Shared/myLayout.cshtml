@@ -15,20 +15,20 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top main">
+    <div class="navbar navbar-inverse navbar-fixed-top main" style="border-radius: 30px; margin: 7px; padding: 4px; background-color: #337ab7; border-color: #337ab7; color: white;">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="mais opções">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="mais opções" style="border-color: #337ab7;">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button> 
-                <a href="/" class="navbar-brand">Radar Gioiligente</a>
+                <a href="/" class="navbar-brand" style="color: white;">Radar Gioiligente</a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" style="border-color: #337ab7;">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Cadastrar radar", "Cadastrar", "Radar")</li>
-                    <li>@Html.ActionLink("Radares", "Radares", "Radar")</li>
+                    <li><a class="liNavBar" style="color: white;" href="/radar/cadastrar">Cadastrar radar</a></li>
+                    <li><a class="liNavBar" style="color: white;" href="/radar/existentes">Radares</a></li>
                 </ul>
             </div>
         </div>

@@ -33,7 +33,7 @@
     @{
         if (velocidadeIdeal.velocidade.Length > 0 && velocidadeIdeal.velocidade != "")
         {
-            <h2 class="velIdealTitle">Velocidade ideal: <label class="velIdeal">@velocidadeIdeal.velocidade</label><span class="velIdealSpan">km/h</span></h2>
+            <h2 class="velIdealTitle">Velocidade ideal: <label class="velIdeal">@velocidadeIdeal.velocidade.Replace('.', ',')</label><span class="velIdealSpan">km/h</span></h2>
         }
         else
         {
