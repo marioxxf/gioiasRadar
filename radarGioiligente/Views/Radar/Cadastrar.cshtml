@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/myLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin="">
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+    .main {
+        color: #337ab7;
+        margin-bottom: 50px;
+    }
+
+    .main label {
+        color: black;
+    }
+</style>
+
+<div class="main">
+    <h1>Novo Radar</h1>
+    <form action="/radar/criar" method="post">
+        <div class="form-group">
+            <label>Apelido do radar</label>
+            <input type="text" class="form-control" id="txtApelido" name="txtApelido" placeholder="Insira um apelido para o radar">
+        </div>
+        <div class="form-group">
+            <label>CEP da localização do radar</label>
+            <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+        </div>
+        <div class="form-group">
+            <label>Logradouro</label>
+            <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
+        </div>
+        <div class="form-group">
+            <label>Cidade</label>
+            <input type="text" class="form-control" id="txtCidade" name="txtCidade">
+        </div>
+        <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" class="form-control" id="txtBairro" name="txtBairro">
+        </div>
+        <div class="form-group">
+            <label>UF</label>
+            <input type="text" class="form-control" id="txtUf" name="txtUf">
+        </div>
+        <div class="form-group">
+            <label>Tipo da estrada</label>
+            <input type="text" class="form-control" id="txtTipoEst" name="txtTipoEst">
+        </div>
+        <input type="hidden" id="txtLongitude" name="txtLongitude" />
+        <input type="hidden" id="txtLatitude" name="txtLatitude" />
+        <button type="submit" id="btnCadastro" name="btnCadastro" class="btn btn-primary">Cadastro</button>
+    </form>
+</div>
+
+<script>
+    /* Coletando CEP */
+    jQuery(function ($) {
+        $("input[name='txtCep']").change(function () {
+            var cep_code = $(this).val();
+            if (cep_code.length <= 0) return;
+            $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
+                if (resultado.erro == 1) {
+                    alert("Endereço não encontrado! Por gentileza, coloque outro CEP.");
+                }
+                else {
+                    $("input[name='txtLogradouro']").val(resultado.logradouro);
+                    $("input[name='txtCidade']").val(resultado.localidade);
+                    $("input[name='txtBairro']").val(resultado.bairro);
+                    $("input[name='txtUf']").val(resultado.uf);
+
+                    /* Coletando latitude e longitude */
+                    jQuery(function ($) {
+                        var linkRequisicao = "https://nominatim.openstreetmap.org/search.php?street=" + resultado.logradouro + "&city=" + resultado.localidade + "&state=" + resultado.uf + "&format=jsonv2";
+
+                        $.get(linkRequisicao, function (resultado) {
+                            if (resultado.length >= 1) {
+                                validaSeAchou = true;
+                                if (resultado.length == 0) {
+                                }
+                                else {
+                                    document.getElementById('txtLatitude').value = resultado[0].lat;
+                                    document.getElementById('txtLongitude').value = resultado[0].lon;
+                                    console.log(document.getElementById('txtLongitude').value);
+                                    console.log(document.getElementById('txtLatitude').value);
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    });
+</script>

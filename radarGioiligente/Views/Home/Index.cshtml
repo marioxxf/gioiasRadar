@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/myLayout.cshtml";
+    List<Business.Radar> radars = new Business.Radar().ListAll();
+    List<Business.RadarLocation> radarsLocations = new Business.RadarLocation().ListAll();
+
+    int qtdLocais = radarsLocations.Count;
+    string latitude = "";
+    string longitude = "";
+    int iterador = 0;
+
+    Dictionary<int, string> radarsNames = new Dictionary<int, string>();
+    if (radars != null)
+    {
+        foreach (var radar in radars)
+        {
+            radarsNames.Add(radar.idRadar, radar.apelido);
+        }
+    }
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin="">
+</script>
+
+<style>
+    #map {
+        height: 600px;
+        width: 85%;
+        margin: auto;
+        margin-bottom: 50px;
+        border-radius: 25px;
+    }
+
+    .main {
+        margin-bottom: 50px;
+        color: #337ab7;
+    }
+</style>
+
+<input type="text" id="qtdLocais" name="qtdLocais" value="@qtdLocais" style="display:none;" />
+
+@{
+    iterador = 1;
+    foreach (var location in radarsLocations)
+    {
+        latitude = location.latitude.ToString().Replace(",", ".");
+        longitude = location.longitude.ToString().Replace(",", ".");
+        <input type="text" id="local/@iterador" name="local/@iterador" value="[@latitude,@longitude]" style="display:none;" />
+        <input type="text" id="radarName/@iterador" name="radarName/@iterador" value="@radarsNames[location.idRadar]" style="display:none;" />
+        <input type="text" id="radarId/@iterador" name="radarId/@iterador" value="@location.idRadar" style="display:none;" />
+        iterador = iterador + 1;
+    }
+}
+
+<div class="main">
+    @if (TempData["radarCriado"] != null)
+    {
+        <br /><div id="divRadarCriado" name="divRadarCriado" class="alert alert-success">@TempData["radarCriado"]</div>
+    }
+    @if (TempData["ocorrenciaCriada"] != null)
+    {
+        <br /><div id="divOccCriada" name="divOccCriada" class="alert alert-success">@TempData["ocorrenciaCriada"] Acesse o <a href="/radar/perfil/@TempData["idPerfilDaOccCriada"]">perfil do radar</a> e veja ela na listagem atualizada.</div>
+    }
+    <h1>Radar Inteligente</h1>
+    <h3>Veja os radares cadastrados, acesse-os e verifique as estatísticas!</h3>
+</div>
+<div id="map"></div>
+
+<script>
+    setTimeout(function () {
+        $('#divRadarCriado').fadeOut('fast');
+    }, 5000);
+
+    setTimeout(function () {
+        $('#divOccCriada').fadeOut('fast');
+    }, 15000);
+
+    var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        {
+            attribution: false
+        });
+
+    var map = L.map('map',
+        {
+            zoomControl: true,
+            layers: [tileLayer],
+            maxZoom: 18,
+            minZoom: 1
+        })
+        .setView(['51.505', '-0.09'], 13);
+
+    jQuery(function ($) {
+        $(document).ready(function () {
+            for (i = 1; i <= document.getElementById('qtdLocais').value; i++) {
+                var valores = JSON.parse(document.getElementById('local/' + i).value);
+                var latitude = valores[0];
+                var longitude = valores[1];
+                var radarName = document.getElementById('radarName/' + i).value;
+                var perfilDoRadar = "radar/perfil/" + document.getElementById('radarId/' + i).value;
+                var marcador = L.marker([latitude, longitude]).addTo(map);
+                console.log(latitude + "," + longitude);
+                marcador.bindPopup("<div style='font-size: 14px;'><ce   nter><b>Radar: </b>" + radarName + "<br><b>Mais informações</b>: <a target='_self' href='" + perfilDoRadar + "'>Acesso ao perfil</a></center></div>").openPopup();
+            }
+        });
+    });
+
+    setTimeout(function () { map.invalidateSize() }, 800);
+</script>

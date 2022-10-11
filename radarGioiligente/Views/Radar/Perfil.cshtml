@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/myLayout.cshtml";
+    var radar = ViewBag.Radar;
+    var radarLocation = ViewBag.RadarLocation;
+    var velocidadeIdeal = ViewBag.VelocidadeIdeal;
+    List<Business.Occurrence> occurrences = ViewBag.Occurrences;
+    var qtdRadarAcidentes = 0;
+
+    foreach(var occurrence in occurrences)
+    {
+        if(occurrence.acidente == 1)
+        {
+            qtdRadarAcidentes = qtdRadarAcidentes + 1;
+        }
+    }
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin="">
+</script>
+
+<script src="https://unpkg.com/feather-icons"></script>
+
+<div class="main">
+    <h1>@radar.apelido</h1>
+    @{
+        if (velocidadeIdeal.velocidade.Length > 0 && velocidadeIdeal.velocidade != "")
+        {
+            <h2>Velocidade ideal: <label style="color: #9d9d9d; font-size: 28px;">@velocidadeIdeal.velocidade</label><span style="color: #9d9d9d; font-size: 19px; ">km/h</span></h2>
+        }
+        else
+        {
+            <h2>Velocidade ideal: <label style="color: #9d9d9d; font-weight: normal; font-size: 20px;">Sem dados suficiente para estimar a velocidade ideal neste radar</label></h2>
+        }
+    }
+    <div class="locationRadarData">
+        <h4 class="subtitle">Localização</h4>
+        Cidade: @radarLocation.cidade, @radarLocation.uf<br />
+        Bairro: @radarLocation.bairro<br />
+        CEP: @radarLocation.cep
+    </div>
+    <div class="infoRadarData">
+        <h4 class="subtitle">Informações sobre o radar</h4>
+        Tipo da via: @radarLocation.viaTipo<br />
+        Quantidade de acidentes relatados: @qtdRadarAcidentes
+    </div>
+</div>
+
+<div class="occurrencesRadarData">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" ">
+                    <h4 class="subtitle">Ocorrências</h4> &nbsp;<i data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" data-feather="align-left"></i>&nbsp;<small>Clique para expandir/recolher</small>
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <table class="table table-striped" id="occTable" name="occTable">
+                        <tr class="headerOccTable">
+                            <td>Data da ocorrência</td>
+                            <td>Data da criação da ocorrência</td>
+                            <td>Temperatura no local</td>
+                            <td>Tipo do veículo</td>
+                            <td>Placa do veículo</td>
+                            <td>Velocidade do veículo</td>
+                            <td>Quantidade de passageiros no veículo</td>
+                            <td>Estava chovendo?</td>
+                            <td>Teve acidente?</td>
+                        </tr>
+                        @{
+                            foreach (var occurrence in occurrences)
+                            {
+                                System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("pt-BR");
+                                var dtOcorrencia = DateTime.Parse(occurrence.dataOcorrencia, cultureinfo);
+                                string dtOcorrenciaFinal = dtOcorrencia.ToString("dd/M/yyyy", cultureinfo);
+                                string hrOcorrenciaFinal = dtOcorrencia.ToString("HH:mm", cultureinfo);
+
+                                string dtCriacaoFinal = occurrence.dataCriacao.ToString("dd/M/yyyy", cultureinfo);
+                                string hrCriacaoFinal = occurrence.dataCriacao.ToString("HH:mm", cultureinfo);
+
+
+                                <tr>
+                                    <td>@dtOcorrenciaFinal às @hrOcorrenciaFinal</td>
+                                    <td>@dtCriacaoFinal às @hrCriacaoFinal</td>
+                                    <td>@occurrence.temperatura<span style="font-size: 15px;">º</span></td>
+                                    <td>@occurrence.veiculoTipo</td>
+                                    <td>@occurrence.veiculoPlaca</td>
+                                    <td>@occurrence.veiculoVelocidade<span style="font-size: 9px;">km/h</span></td>
+                                    <td>@occurrence.veiculoPassageiroQtd</td>
+                                    @{
+                                        if (occurrence.chuva == 1)
+                                        {
+                                            <td>Sim</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Nâo</td>
+                                        }
+                                        if (occurrence.acidente == 1)
+                                        {
+                                            <td>Sim</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Não</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-s btNnewOcc" data-toggle="modal" data-target="#myModal">
+    Nova ocorrência
+</button>
+
+<!-- New Occ. Modal's -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Cadastrar uma nova ocorrência no @radar.apelido</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/radar/ocorrer" method="post">
+                    <div class="form-group">
+                        <label class="control-label">Data da ocorrência:</label>
+                        <input type="date" class="form-control" id="txtDataOcc" name="txtDataOcc">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Hora da ocorrência:</label>
+                        <input type="time" class="form-control" id="txtHoraOcc" name="txtHoraOcc">
+                        <input type="hidden" id="txtDateTimeOcc" name="txtDateTimeOcc">
+                        <input type="hidden" id="txtIdRadar" name="txtIdRadar">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Velocidade do veículo (km/h):</label>
+                        <input placeholder="Insira apenas números" type="text" class="form-control" id="txtVeiVel" name="txtVeiVel">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Quantos passageiros havia no carro?</label>
+                        <input type="text" class="form-control" id="txtQtdPassag" name="txtQtdPassag">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Estava chovendo?</label>
+                        <select class="form-select" id="txtSelChuva" name="txtSelChuva">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Houve acidente?</label>
+                        <select class="form-select" id="txtSelAcid" name="txtSelAcid">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tipo do veículo</label>
+                        <select class="form-select" id="txtTipoVei" name="txtTipoVei">
+                            <option value="Selecione">Selecione</option>
+                            <option value="Carro">Carro</option>
+                            <option value="Moto">Moto</option>
+                            <option value="Caminhão">Caminhão</option>
+                            <option value="Caminhonete">Caminhonete</option>
+                            <option value="Ônibus">Ônibus</option>
+                            <option value="Trator">Trator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Placa do veículo:</label>
+                        <input type="text" class="form-control" id="txtPlacaVei" name="txtPlacaVei">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Temperatura no momento da ocorr. (ºC):</label>
+                        <input type="text" class="form-control" id="txtTemp" name="txtTemp">
+                    </div>
+                    <button type="submit" id="btnCadastroReal" name="btnCadastroReal" style="display: none;">Cadastrar ocorrência</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a onclick="handleValidateInfoNewOcc()" id="btnCadastroFake" name="btnCadastroFake" class="btn btn-primary">Cadastrar ocorrência</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Desistir do cadastro</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    feather.replace();
+
+    setTimeout(function () {
+        $('#divDeuBom').fadeOut('fast');
+    }, 5000);
+
+    function handleValidateInfoNewOcc() {
+        /* Start create the final DateTime of the new occurrence */
+        var finalDateTime = document.getElementById('txtDataOcc').value + " " + document.getElementById('txtHoraOcc').value + ":00";
+        document.getElementById('txtDateTimeOcc').value = finalDateTime;
+        /* End create the final DateTime of the new occurrence */
+
+        /* Set the Radar's ID for post to RadarController */
+        document.getElementById('txtIdRadar').value = '@radar.idRadar';
+
+        /* Post the form's data */
+        var btnPostData = document.getElementById('btnCadastroReal');
+        btnPostData.click();
+    }
+</script>

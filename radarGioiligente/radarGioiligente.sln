@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "radarGioiligente", "radarGioiligente.csproj", "{063A9549-E4E7-4C4B-993B-2B07DF960C3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "..\Business\Business.csproj", "{37D099AE-BD6D-40FD-A14E-3DE18D086C20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\Database\Database.csproj", "{D2FEBF0D-0B40-4CB7-8A76-B5172AF39F20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{063A9549-E4E7-4C4B-993B-2B07DF960C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{063A9549-E4E7-4C4B-993B-2B07DF960C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{063A9549-E4E7-4C4B-993B-2B07DF960C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{063A9549-E4E7-4C4B-993B-2B07DF960C3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D099AE-BD6D-40FD-A14E-3DE18D086C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D099AE-BD6D-40FD-A14E-3DE18D086C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D099AE-BD6D-40FD-A14E-3DE18D086C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D099AE-BD6D-40FD-A14E-3DE18D086C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2FEBF0D-0B40-4CB7-8A76-B5172AF39F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2FEBF0D-0B40-4CB7-8A76-B5172AF39F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2FEBF0D-0B40-4CB7-8A76-B5172AF39F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2FEBF0D-0B40-4CB7-8A76-B5172AF39F20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5EEE072B-0115-4E05-9029-8AE5C0AC0662}
+	EndGlobalSection
+EndGlobal
