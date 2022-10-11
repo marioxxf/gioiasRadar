@@ -1,33 +1,51 @@
 ﻿@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/myLayout.cshtml";
-}
+    List<Business.Radar> radars = new Business.Radar().ListAll();
+    List<Business.RadarLocation> radarsLocations = new Business.RadarLocation().ListAll();
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-      crossorigin="" />
+    IDictionary<int, string> radarsData = new Dictionary<int, string>();
 
-<!-- Make sure you put this AFTER Leaflet's CSS -->
-<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin="">
-</script>
-
-<style>
-    .main {
-        color: #337ab7;
+    foreach(var radar in radars)
+    {
+        foreach (var radarLocation in radarsLocations)
+        {
+            if(radarLocation.idRadar == radar.idRadar)
+            {
+                var localizacaoRadar = radarLocation.bairro + ", " + radarLocation.cidade + ", " + radarLocation.uf + ", 0" + radarLocation.cep;
+                radarsData.Add(radar.idRadar, localizacaoRadar);
+            }
+        }
     }
-</style>
+}
 
 <div class="main">
     <h1>Radares cadastrados</h1>
-    <h3>Acesse já um dos radares abaixo e colabore com a inteligência dele!</h3>
+    <h3 class="subtitle">Acesse já um dos radares abaixo e colabore com a inteligência dele!</h3>
 </div>
 
-<div>
-    <table>
-        <tr>
-
-        </tr>
-    </table>
-</div>
+<table class="table table-striped occDataTable" id="occTable" name="occTable">
+    <tr class="headerOccTable">
+        <td>Nome</td>
+        <td>Criado em</td>
+        <td>Localização</td>
+        <td>Perfil</td>
+    </tr>
+    @{ 
+        foreach (var radar in radars)
+        {
+            <tr>
+                <td>@radar.apelido</td>
+                @{ 
+                    System.Globalization.CultureInfo cultureinfo = new System.Globalization.CultureInfo("pt-BR");
+                    cultureinfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+                    string dtCriacaoFinal = radar.dataCriacao.ToString("dd/M/yyyy", cultureinfo);
+                    string hrCriacaoFinal = radar.dataCriacao.ToString("HH:mm", cultureinfo);
+                }
+                <td>@dtCriacaoFinal às @hrCriacaoFinal</td>
+                <td>@radarsData[radar.idRadar]</td>
+                <td><a class="btn btn-primary btn-sm" style="padding: 2.5px 2.5px;" href="/radar/perfil/@radar.idRadar">Acessar perfil</a></td>
+            </tr>
+        }
+    }
+</table>
