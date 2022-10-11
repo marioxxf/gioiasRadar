@@ -37,19 +37,19 @@
         </div>
         <div class="form-group">
             <label>Logradouro</label>
-            <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
+            <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro" readonly>
         </div>
         <div class="form-group">
             <label>Cidade</label>
-            <input type="text" class="form-control" id="txtCidade" name="txtCidade">
+            <input type="text" class="form-control" id="txtCidade" name="txtCidade" readonly>
         </div>
         <div class="form-group">
             <label>Bairro</label>
-            <input type="text" class="form-control" id="txtBairro" name="txtBairro">
+            <input type="text" class="form-control" id="txtBairro" name="txtBairro" readonly>
         </div>
         <div class="form-group">
             <label>UF</label>
-            <input type="text" class="form-control" id="txtUf" name="txtUf">
+            <input type="text" class="form-control" id="txtUf" name="txtUf" readonly>
         </div>
         <div class="form-group">
             <label>Tipo da estrada</label>
@@ -57,11 +57,37 @@
         </div>
         <input type="hidden" id="txtLongitude" name="txtLongitude" />
         <input type="hidden" id="txtLatitude" name="txtLatitude" />
-        <button type="submit" id="btnCadastro" name="btnCadastro" class="btn btn-primary">Cadastro</button>
+        <button type="submit" id="btnCadastroReal" name="btnCadastroReal" style="display:none;"></button>
+        <a onclick="handleValidateInfoNewRadar()" id="btnCadastroFake" name="btnCadastroFake" class="btn btn-primary">Cadastrar radar</a>
     </form>
 </div>
 
 <script>
+    function handleValidateInfoNewRadar() {
+        var longitude = document.getElementById('txtLongitude').value;
+        var latitude = document.getElementById('txtLatitude').value;
+        var btnReal = document.getElementById('btnCadastroReal');
+        var nomeRadar = document.getElementById('txtApelido').value;
+        var cep = document.getElementById('txtCep').value;
+
+        if (cep.length < 2) {
+            alert("Por favor, insira um CEP válido.");
+        }
+        else if (longitude.length < 5 && latitude.length < 5) {
+            alert("Desculpe, nossa base de dados não conhece esse CEP. Por favor, insira outro e tente cadastrar novamente.");
+            document.getElementById('txtCep') = "";
+            document.getElementById('txtLogradouro') = "";
+            document.getElementById('txtCidade') = "";
+            document.getElementById('txtBairro') = "";
+            document.getElementById('txtUf') = "";
+        }
+        else if (nomeRadar == "") {
+            alert("Por gentileza, insira um nome para o radar.");
+        }
+        else {
+            btnReal.click();
+        }
+    }
     /* Coletando CEP */
     jQuery(function ($) {
         $("input[name='txtCep']").change(function () {
