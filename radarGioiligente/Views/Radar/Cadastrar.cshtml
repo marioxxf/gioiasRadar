@@ -125,13 +125,13 @@
 
                             $.get(linkRequisicao, function (resultado) {
                                 if (resultado.length == 0) {
-                                    alert("Infelizmente não encontramos este CEP em nossa base de dados. Por favor, insira outro que seja próximo do seu alvo.");
-                                    refreshLatLngMap(0, 0);
+                                    alert("Infelizmente não encontramos todas as informações necessárias neste CEP. Por favor, insira outro que esteja próximo ao local que deseja cadastrar o radar.");
+                                    refreshLatLngMap(-23.55159552480195, -46.63302943110467, false);
                                 }
                                 else {
                                     document.getElementById('txtLatitude').value = resultado[0].lat;
                                     document.getElementById('txtLongitude').value = resultado[0].lon;
-                                    refreshLatLngMap(resultado[0].lat, resultado[0].lon);
+                                    refreshLatLngMap(resultado[0].lat, resultado[0].lon, true);
                                 }
                             });
                         });
@@ -152,15 +152,19 @@
                 maxZoom: 18,
                 minZoom: 1
             })
-            .setView(['51.505', '-0.09'], 17);
+            .setView(['-23.55159552480195', '-46.63302943110467'], 17);  
         /* Fim da inicialização do mapa */
 
-        function refreshLatLngMap(lat, lng) {
+        function refreshLatLngMap(lat, lng, encontrou) {
             map.panTo(new L.LatLng(lat, lng));
 
-            setTimeout(() => {
-                alert("Ótimo, o endereço foi encontrado! Agora, clique na exata posição em que deseja cadastrar o radar.");
-            }, 1250);
+            if (encontrou == false) {
+            }
+            else {
+                setTimeout(() => {
+                    alert("Ótimo, o endereço foi encontrado! Agora, clique na exata posição em que deseja cadastrar o radar.");
+                }, 1250);
+            }
         }
 
         function onMapClick(e) {
@@ -172,6 +176,7 @@
                 .setLatLng(e.latlng)
                 .setContent("<div style='font-size: 14px; font-family: 'roboto-regular', Verdana;'><center>Ok, é aqui mesmo que irei cadastrar o novo radar.</center></div>")
                 .openOn(map);
+            console.log("Here: " + e.latlng.lat + " " + e.latlng.lng);
             document.getElementById('txtLatitude').value = e.latlng.lat;
             document.getElementById('txtLongitude').value = e.latlng.lng;
 
