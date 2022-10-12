@@ -29,7 +29,7 @@
 <script src="https://unpkg.com/feather-icons"></script>
 
 <div class="main">
-    <h1>@radar.apelido</h1>
+    <h1 class="title">@radar.apelido</h1>
     @{
         if (velocidadeIdeal.velocidade.Length > 0 && velocidadeIdeal.velocidade != "")
         {
@@ -41,15 +41,17 @@
         }
     }
     <div class="locationRadarData">
-        <h4 class="subtitle">Localização</h4>
-        Cidade: @radarLocation.cidade, @radarLocation.uf<br />
-        Bairro: @radarLocation.bairro<br />
-        CEP: @radarLocation.cep
+        <h3>Localização</h3>
+        <label class="subtitle">Endereço completo:</label> @radarLocation.enderecoCompleto<br />
+        <label class="subtitle">Cidade:</label> @radarLocation.cidade, @radarLocation.uf<br />
+        <label class="subtitle">Bairro:</label> @radarLocation.bairro<br />
+        <label class="subtitle">CEP:</label> @radarLocation.cep<br />
+        <label class="subtitle">Número:</label> @radarLocation.numero
     </div>
     <div class="infoRadarData">
-        <h4 class="subtitle">Informações sobre o radar</h4>
-        Tipo da via: @radarLocation.viaTipo<br />
-        Quantidade de acidentes relatados: @qtdRadarAcidentes
+        <h3>Informações sobre o radar</h3>
+        <label class="subtitle">Tipo da via:</label> @radarLocation.viaTipo<br />
+        <label class="subtitle">Quantidade de acidentes relatados:</label> @qtdRadarAcidentes
     </div>
 </div>
 
