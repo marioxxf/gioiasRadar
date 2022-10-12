@@ -55,7 +55,7 @@ namespace radarGioiligente.Controllers
                 radarLocation.viaTipo           = Request["txtTipoEst"];
                 radarLocation.Save();
 
-                Response.Redirect("/");
+                Response.Redirect("/radar/perfil/" + lastDefinitiveRadarCreated.idRadar);
                 TempData["radarCriado"] = "O radar foi cadastrado com sucesso!";
             }
             catch (Exception erro)
