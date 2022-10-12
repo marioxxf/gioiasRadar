@@ -19,6 +19,16 @@
     }
 }
 
+<style type="text/css">
+    #map {
+        height: 600px;
+        width: 85%;
+        margin: auto;
+        margin-bottom: 50px;
+        border-radius: 25px;
+    }
+</style>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
       integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
       crossorigin="" />
@@ -52,7 +62,7 @@
     {
         <br /><div id="divOccCriada" name="divOccCriada" class="alert alert-success">@TempData["ocorrenciaCriada"] Acesse o <a href="/radar/perfil/@TempData["idPerfilDaOccCriada"]">perfil do radar</a> e veja ela na listagem atualizada.</div>
     }
-    <h1>Radar Inteligente</h1>
+    <h1 class="title">Radar Inteligente</h1>
     <h3 class="subtitle">Veja os radares cadastrados, acesse-os e verifique as estatísticas!</h3>
 </div>
 <div id="map"></div>

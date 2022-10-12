@@ -81,21 +81,21 @@ select {
     overflow-anchor: none;
     transition: var(--bs-accordion-transition);
 }
-
 /* Fim Accordion do Bootstrap 5.0 */
-
-#map {
-    height: 600px;
-    width: 85%;
-    margin: auto;
-    margin-bottom: 50px;
-    border-radius: 25px;
-}
 
 .main {
     margin-bottom: 50px;
     margin-top: 45px;
+    color: #333333;
+    font-family: "roboto-regular", Verdana;
+}
+
+.title {
     color: #337ab7;
+}
+
+.registerForm {
+    color: #333333;
     font-family: "roboto-regular", Verdana;
 }
 

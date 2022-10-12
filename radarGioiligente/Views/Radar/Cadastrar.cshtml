@@ -14,52 +14,70 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <style>
-    .main {
-        color: #337ab7;
-        margin-bottom: 50px;
+    .registerArea {
+        width: 100%;
+        padding: 0 24px;
+        margin-top: 28px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .main label {
-        color: black;
+    #map {
+        height: 600px;
+        width: 85%;
+        margin: auto;
+        margin-bottom: 50px;
+        border-radius: 25px;
+        margin-top: 65px;
     }
 </style>
 
-<div class="main">
-    <h1>Novo Radar</h1>
-    <form action="/radar/criar" method="post">
-        <div class="form-group">
-            <label>Apelido do radar</label>
-            <input type="text" class="form-control" id="txtApelido" name="txtApelido" placeholder="Insira um apelido para o radar">
+<div style="width: 100%; overflow: hidden;">
+    <div style="width: 600px; float: left;">
+        <div class="main">
+            <h1 class="title">Novo Radar</h1>
+            <form action="/radar/criar" method="post">
+                <div class="registerInfo">
+                    <div class="form-group registerInfo">
+                        <label>Apelido do radar</label>
+                        <input type="text" class="form-control" id="txtApelido" name="txtApelido" placeholder="Insira um apelido para o radar">
+                    </div>
+                    <div class="form-group">
+                        <label>CEP da localização do radar</label>
+                        <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+                    </div>
+                    <div class="form-group">
+                        <label>Logradouro</label>
+                        <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input type="text" class="form-control" id="txtCidade" name="txtCidade" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input type="text" class="form-control" id="txtBairro" name="txtBairro" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>UF</label>
+                        <input type="text" class="form-control" id="txtUf" name="txtUf" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo da estrada</label>
+                        <input type="text" class="form-control" id="txtTipoEst" name="txtTipoEst">
+                    </div>
+                    <input type="hidden" id="txtLongitude" name="txtLongitude" />
+                    <input type="hidden" id="txtLatitude" name="txtLatitude" />
+                    <button type="submit" id="btnCadastroReal" name="btnCadastroReal" style="display:none;"></button>
+                    <a onclick="handleValidateInfoNewRadar()" id="btnCadastroFake" name="btnCadastroFake" class="btn btn-primary">Cadastrar radar</a>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label>CEP da localização do radar</label>
-            <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
-        </div>
-        <div class="form-group">
-            <label>Logradouro</label>
-            <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro" readonly>
-        </div>
-        <div class="form-group">
-            <label>Cidade</label>
-            <input type="text" class="form-control" id="txtCidade" name="txtCidade" readonly>
-        </div>
-        <div class="form-group">
-            <label>Bairro</label>
-            <input type="text" class="form-control" id="txtBairro" name="txtBairro" readonly>
-        </div>
-        <div class="form-group">
-            <label>UF</label>
-            <input type="text" class="form-control" id="txtUf" name="txtUf" readonly>
-        </div>
-        <div class="form-group">
-            <label>Tipo da estrada</label>
-            <input type="text" class="form-control" id="txtTipoEst" name="txtTipoEst">
-        </div>
-        <input type="hidden" id="txtLongitude" name="txtLongitude" />
-        <input type="hidden" id="txtLatitude" name="txtLatitude" />
-        <button type="submit" id="btnCadastroReal" name="btnCadastroReal" style="display:none;"></button>
-        <a onclick="handleValidateInfoNewRadar()" id="btnCadastroFake" name="btnCadastroFake" class="btn btn-primary">Cadastrar radar</a>
-    </form>
+    </div>
+    <div id="mapDiv" name="mapDiv" style="margin-left: 600px;">
+        <div id="map"></div>
+    </div>
 </div>
 
 <script>
@@ -124,5 +142,52 @@
                 }
             });
         });
+    });
+
+    /* Início da inicialização do mapa */
+    var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        {
+            attribution: false
+        });
+    var map = L.map('map',
+        {
+            zoomControl: true,
+            layers: [tileLayer],
+            maxZoom: 18,
+            minZoom: 1
+        })
+        .setView(['51.505', '-0.09'], 13);
+    /* Fim da inicialização do mapa */
+
+    function onMapClick(e) {
+        alert("You clicked the map at " + e.latlng);
+    }
+    var popup = L.popup();
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the map at " + e.latlng.toString())
+            .openOn(map);
+    }
+    map.on('click', onMapClick);
+
+    /* Coletando o tipo de device que acessou o site */
+    const deviceType = () => {
+        const ua = navigator.userAgent;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return "tablet";
+        }
+        else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            return "mobile";
+        }
+        return "desktop";
+    };
+
+    $(document).ready(function () {
+        if (deviceType() == "desktop") {
+        }
+        else if (deviceType() == "mobile") {
+            document.getElementById('mapDiv').style.marginLeft = '0';
+        }
     });
 </script>
