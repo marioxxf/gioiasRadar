@@ -16,11 +16,11 @@ namespace Database
             return ConfigurationManager.AppSettings["sqlConn"];
         }
 
-        public void Create(int idRadar, string latitude, string longitude, string uf, string cidade, string bairro, int cep, string viaTipo)
+        public void Create(int idRadar, string latitude, string longitude, string uf, string cidade, string bairro, int cep, int numero, string enderecoCompleto, string viaTipo)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into radarsLocations (idRadar, latitude, longitude, uf, cidade, bairro, cep, viaTipo) values (" + idRadar + ", '" + latitude + "','" + longitude + "', '" + uf + "', '" + cidade + "', '" + bairro + "', " + cep + ", '" + viaTipo + "')";
+                string queryString = "insert into radarsLocations (idRadar, latitude, longitude, uf, cidade, bairro, cep, numero, enderecoCompleto, viaTipo) values (" + idRadar + ", '" + latitude + "','" + longitude + "', '" + uf + "', '" + cidade + "', '" + bairro + "', " + cep + ", " + numero + ", '" + enderecoCompleto + "', '" + viaTipo + "')";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();

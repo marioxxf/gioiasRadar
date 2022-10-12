@@ -17,11 +17,13 @@ namespace Business
         public string cidade { get; set; }
         public string bairro { get; set; }
         public int cep { get; set; }
+        public int numero { get; set; }
+        public string enderecoCompleto { get; set; }
         public string viaTipo { get; set; }
 
         public void Save()
         {
-            new Database.RadarLocation().Create(this.idRadar, this.latitude, this.longitude, this.uf, this.cidade, this.bairro, this.cep, this.viaTipo);
+            new Database.RadarLocation().Create(this.idRadar, this.latitude, this.longitude, this.uf, this.cidade, this.bairro, this.cep, this.numero, this.enderecoCompleto, this.viaTipo);
         }
 
         public List<RadarLocation> ListAll()
@@ -39,6 +41,8 @@ namespace Business
                 radarLocation.cidade = row["cidade"].ToString();
                 radarLocation.bairro = row["bairro"].ToString();
                 radarLocation.cep = Convert.ToInt32(row["cep"]);
+                radarLocation.numero = Convert.ToInt32(row["numero"]);
+                radarLocation.enderecoCompleto = row["enderecoCompleto"].ToString();
                 radarLocation.viaTipo = row["viaTipo"].ToString();
                 listaLocalDosRadares.Add(radarLocation);
             }
@@ -59,6 +63,8 @@ namespace Business
                 radarLocation.cidade = row["cidade"].ToString();
                 radarLocation.bairro = row["bairro"].ToString();
                 radarLocation.cep = Convert.ToInt32(row["cep"]);
+                radarLocation.numero = Convert.ToInt32(row["numero"]);
+                radarLocation.enderecoCompleto = row["enderecoCompleto"].ToString();
                 radarLocation.viaTipo = row["viaTipo"].ToString();
             }
             return radarLocation;

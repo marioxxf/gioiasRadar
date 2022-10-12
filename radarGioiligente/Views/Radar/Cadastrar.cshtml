@@ -29,23 +29,26 @@
         margin: auto;
         margin-bottom: 50px;
         border-radius: 25px;
-        margin-top: 65px;
+        margin-top: 10px;
     }
 </style>
 
-<div style="width: 100%; overflow: hidden;">
-    <div style="width: 600px; float: left;">
-        <div class="main">
-            <h1 class="title">Novo Radar</h1>
-            <form action="/radar/criar" method="post">
+<form action="/radar/criar" method="post">
+    <div style="width: 100%; overflow: hidden;">
+        <div style="width: 600px; float: left;">
+            <div class="form-group registerForm" style="margin-left: 55px;">
+                <label style="margin-top: 60px;">CEP da localização do radar</label>
+                <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+            </div>
+            <div id="map" name="map"></div>
+        </div>
+        <div id="mapDiv" name="mapDiv" style="margin-left: 600px;">
+            <div class="main">
+                <h1 class="title">Novo Radar</h1>
                 <div class="registerInfo">
                     <div class="form-group registerInfo">
                         <label>Apelido do radar</label>
                         <input type="text" class="form-control" id="txtApelido" name="txtApelido" placeholder="Insira um apelido para o radar">
-                    </div>
-                    <div class="form-group">
-                        <label>CEP da localização do radar</label>
-                        <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
                     </div>
                     <div class="form-group">
                         <label>Logradouro</label>
@@ -56,12 +59,16 @@
                         <input type="text" class="form-control" id="txtCidade" name="txtCidade" readonly>
                     </div>
                     <div class="form-group">
+                        <label>UF</label>
+                        <input type="text" class="form-control" id="txtUf" name="txtUf" readonly>
+                    </div>
+                    <div class="form-group">
                         <label>Bairro</label>
                         <input type="text" class="form-control" id="txtBairro" name="txtBairro" readonly>
                     </div>
                     <div class="form-group">
-                        <label>UF</label>
-                        <input type="text" class="form-control" id="txtUf" name="txtUf" readonly>
+                        <label>Número</label>
+                        <input type="text" class="form-control" id="txtNumero" name="txtNumero" readonly>
                     </div>
                     <div class="form-group">
                         <label>Tipo da estrada</label>
@@ -69,125 +76,160 @@
                     </div>
                     <input type="hidden" id="txtLongitude" name="txtLongitude" />
                     <input type="hidden" id="txtLatitude" name="txtLatitude" />
+                    <input type="hidden" id="txtEnderecoCompleto" name="txtEnderecoCompleto" />
                     <button type="submit" id="btnCadastroReal" name="btnCadastroReal" style="display:none;"></button>
                     <a onclick="handleValidateInfoNewRadar()" id="btnCadastroFake" name="btnCadastroFake" class="btn btn-primary">Cadastrar radar</a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    <div id="mapDiv" name="mapDiv" style="margin-left: 600px;">
-        <div id="map"></div>
-    </div>
-</div>
+</form>
 
-<script>
-    function handleValidateInfoNewRadar() {
-        var longitude = document.getElementById('txtLongitude').value;
-        var latitude = document.getElementById('txtLatitude').value;
-        var btnReal = document.getElementById('btnCadastroReal');
-        var nomeRadar = document.getElementById('txtApelido').value;
-        var cep = document.getElementById('txtCep').value;
+    <script>
+        function handleValidateInfoNewRadar() {
+            var longitude = document.getElementById('txtLongitude').value;
+            var latitude = document.getElementById('txtLatitude').value;
+            var btnReal = document.getElementById('btnCadastroReal');
+            var nomeRadar = document.getElementById('txtApelido').value;
+            var cep = document.getElementById('txtCep').value;
 
-        if (cep.length < 2) {
-            alert("Por favor, insira um CEP válido.");
+            if (cep.length < 2) {
+                alert("Por favor, insira um CEP válido.");
+            }
+            else if (nomeRadar == "") {
+                alert("Por gentileza, insira um nome para o radar.");
+            }
+            else {
+                btnReal.click();
+                //console.log("CEP = " + cep + "\nApelido: " + nomeRadar + "\nLat.: " + latitude + "\nLong.: " + longitude);
+            }
         }
-        else if (longitude.length < 5 && latitude.length < 5) {
-            alert("Desculpe, nossa base de dados não conhece esse CEP. Por favor, insira outro e tente cadastrar novamente.");
-            document.getElementById('txtCep') = "";
-            document.getElementById('txtLogradouro') = "";
-            document.getElementById('txtCidade') = "";
-            document.getElementById('txtBairro') = "";
-            document.getElementById('txtUf') = "";
-        }
-        else if (nomeRadar == "") {
-            alert("Por gentileza, insira um nome para o radar.");
-        }
-        else {
-            btnReal.click();
-        }
-    }
-    /* Coletando CEP */
-    jQuery(function ($) {
-        $("input[name='txtCep']").change(function () {
-            var cep_code = $(this).val();
-            if (cep_code.length <= 0) return;
-            $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
-                if (resultado.erro == 1) {
-                    alert("Endereço não encontrado! Por gentileza, coloque outro CEP.");
-                }
-                else {
-                    $("input[name='txtLogradouro']").val(resultado.logradouro);
-                    $("input[name='txtCidade']").val(resultado.localidade);
-                    $("input[name='txtBairro']").val(resultado.bairro);
-                    $("input[name='txtUf']").val(resultado.uf);
+        /* Coletando CEP */
+        jQuery(function ($) {
+            $("input[name='txtCep']").change(function () {
+                var cep_code = $(this).val();
+                if (cep_code.length <= 0) return;
+                $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
+                    if (resultado.erro == 1) {
+                        alert("Endereço não encontrado! Por gentileza, coloque outro CEP.");
+                    }
+                    else {
+                        $("input[name='txtLogradouro']").val(resultado.logradouro);
+                        $("input[name='txtCidade']").val(resultado.localidade);
+                        $("input[name='txtBairro']").val(resultado.bairro);
+                        $("input[name='txtUf']").val(resultado.uf);
 
-                    /* Coletando latitude e longitude */
-                    jQuery(function ($) {
-                        var linkRequisicao = "https://nominatim.openstreetmap.org/search.php?street=" + resultado.logradouro + "&city=" + resultado.localidade + "&state=" + resultado.uf + "&format=jsonv2";
+                        /* Coletando latitude e longitude */
+                        jQuery(function ($) {
+                            var linkRequisicao = "https://nominatim.openstreetmap.org/search.php?street=" + resultado.logradouro + "&city=" + resultado.localidade + "&state=" + resultado.uf + "&format=jsonv2";
 
-                        $.get(linkRequisicao, function (resultado) {
-                            if (resultado.length >= 1) {
-                                validaSeAchou = true;
+                            $.get(linkRequisicao, function (resultado) {
                                 if (resultado.length == 0) {
+                                    alert("Infelizmente não encontramos este CEP em nossa base de dados. Por favor, insira outro que seja próximo do seu alvo.");
+                                    refreshLatLngMap(0, 0);
                                 }
                                 else {
                                     document.getElementById('txtLatitude').value = resultado[0].lat;
                                     document.getElementById('txtLongitude').value = resultado[0].lon;
-                                    console.log(document.getElementById('txtLongitude').value);
-                                    console.log(document.getElementById('txtLatitude').value);
+                                    refreshLatLngMap(resultado[0].lat, resultado[0].lon);
                                 }
-                            }
+                            });
                         });
-                    });
-                }
+                    }
+                });
             });
         });
-    });
 
-    /* Início da inicialização do mapa */
-    var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        {
-            attribution: false
+        /* Início da inicialização do mapa */
+        var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+            {
+                attribution: false
+            });
+        var map = L.map('map',
+            {
+                zoomControl: true,
+                layers: [tileLayer],
+                maxZoom: 18,
+                minZoom: 1
+            })
+            .setView(['51.505', '-0.09'], 16);
+        /* Fim da inicialização do mapa */
+
+        function refreshLatLngMap(lat, lng) {
+            map.panTo(new L.LatLng(lat, lng));
+
+            setTimeout(() => {
+                alert("Ótimo, o endereço foi encontrado! Agora, clique na exata posição em que deseja cadastrar o radar.");
+            }, 1250);
+        }
+
+        function onMapClick(e) {
+            alert("You clicked the map at " + e.latlng);
+        }
+        var popup = L.popup();
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("<div style='font-size: 14px; font-family: 'roboto-regular', Verdana;'><center>Ok, é aqui mesmo que irei cadastrar o novo radar.</center></div>")
+                .openOn(map);
+            document.getElementById('txtLatitude').value = e.latlng.lat;
+            document.getElementById('txtLongitude').value = e.latlng.lng;
+
+            /* Coletando novo endereço pós-clique no mapa */
+            jQuery(function ($) {
+                var linkRequisicaoDois = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + e.latlng.lat + "," + e.latlng.lng + "&key=AIzaSyAoNW7V7RqDhcCBPyq16bSybD87HaVUWXY";
+                $.get(linkRequisicaoDois, function (resultado) {
+                    if (resultado.length == 0) {
+                    }
+                    else {
+                        var placeId = resultado.results[0].place_id;
+                        var linkRequisicaoFinal = "https://maps.googleapis.com/maps/api/geocode/json?place_id=" + placeId + "&key=AIzaSyAoNW7V7RqDhcCBPyq16bSybD87HaVUWXY";
+                        $.get(linkRequisicaoFinal, function (resultadoFinal) {
+                            if (resultadoFinal.results[0].address_components[0].types[0] == "street_number") {
+                                document.getElementById('txtNumero').value = resultadoFinal.results[0].address_components[0].long_name;
+                            }
+                            if (resultadoFinal.results[0].address_components[1].types[0] == "route") {
+                                document.getElementById('txtLogradouro').value = resultadoFinal.results[0].address_components[1].long_name;
+                            }
+                            if (resultadoFinal.results[0].address_components[2].types[0] == "sublocality" || resultadoFinal.results[0].address_components[2].types[0] == "sublocality_level_1") {
+                                document.getElementById('txtBairro').value = resultadoFinal.results[0].address_components[2].long_name;
+                            }
+                            if (resultadoFinal.results[0].address_components[3].types[0] == "administrative_area_level_2") {
+                                document.getElementById('txtCidade').value = resultadoFinal.results[0].address_components[3].long_name;
+                            }
+                            if (resultadoFinal.results[0].address_components[4].types[0] == "administrative_area_level_1") {
+                                document.getElementById('txtUf').value = resultadoFinal.results[0].address_components[4].short_name;
+                            }
+                            if (resultadoFinal.results[0].address_components[6].types[0] == "postal_code") {
+                                document.getElementById('txtCep').value = resultadoFinal.results[0].address_components[6].long_name.replace("-", "");
+                            }
+                            document.getElementById('txtEnderecoCompleto').value = resultadoFinal.results[0].formatted_address;
+                            /*console.log("Número: " + document.getElementById('txtNumero').value + "\nLogradouro: " + document.getElementById('txtLogradouro').value + "\nBairro: " + document.getElementById('txtBairro').value + "\nCidade: " + document.getElementById('txtCidade').value + "\nUF: " + document.getElementById('txtUf').value + "\nCEP: " + document.getElementById('txtCep').value + "\nEndereço completo: " + document.getElementById('txtEnderecoCompleto').value);*/
+                        });
+                    }
+                });
+            });
+        }
+        map.on('click', onMapClick);
+
+        /* Coletando o tipo de device que acessou o site */
+        const deviceType = () => {
+            const ua = navigator.userAgent;
+            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+                return "tablet";
+            }
+            else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+                return "mobile";
+            }
+            return "desktop";
+        };
+
+        /* Alterando a posição do mapa dependendo do dispositivo conectado */
+        $(document).ready(function () {
+            if (deviceType() == "desktop") {
+            }
+            else if (deviceType() == "mobile") {
+                document.getElementById('mapDiv').style.marginLeft = '0';
+            }
         });
-    var map = L.map('map',
-        {
-            zoomControl: true,
-            layers: [tileLayer],
-            maxZoom: 18,
-            minZoom: 1
-        })
-        .setView(['51.505', '-0.09'], 13);
-    /* Fim da inicialização do mapa */
-
-    function onMapClick(e) {
-        alert("You clicked the map at " + e.latlng);
-    }
-    var popup = L.popup();
-    function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
-    }
-    map.on('click', onMapClick);
-
-    /* Coletando o tipo de device que acessou o site */
-    const deviceType = () => {
-        const ua = navigator.userAgent;
-        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-            return "tablet";
-        }
-        else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
-            return "mobile";
-        }
-        return "desktop";
-    };
-
-    $(document).ready(function () {
-        if (deviceType() == "desktop") {
-        }
-        else if (deviceType() == "mobile") {
-            document.getElementById('mapDiv').style.marginLeft = '0';
-        }
-    });
-</script>
+    </script>

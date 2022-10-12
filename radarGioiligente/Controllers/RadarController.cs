@@ -36,21 +36,23 @@ namespace radarGioiligente.Controllers
             try
             {
                 var radar = new Radar();
-                radar.apelido           = Request["txtApelido"];
+                radar.apelido = Request["txtApelido"];
                 radar.Save();
 
                 var lastRadarCreated = Radar.FoundLastRadarCreated();
                 Business.Radar lastDefinitiveRadarCreated = (Radar)lastRadarCreated;
 
                 var radarLocation = new RadarLocation();
-                radarLocation.idRadar   = lastDefinitiveRadarCreated.idRadar;
-                radarLocation.latitude  = Request["txtLatitude"];
-                radarLocation.longitude = Request["txtLongitude"];
-                radarLocation.uf        = Request["txtUf"];
-                radarLocation.cidade    = Request["txtCidade"];
-                radarLocation.bairro    = Request["txtBairro"];
-                radarLocation.cep       = int.Parse(Request["txtCep"]);
-                radarLocation.viaTipo   = Request["txtTipoEst"];
+                radarLocation.idRadar           = lastDefinitiveRadarCreated.idRadar;
+                radarLocation.latitude          = Request["txtLatitude"];
+                radarLocation.longitude         = Request["txtLongitude"];
+                radarLocation.uf                = Request["txtUf"];
+                radarLocation.cidade            = Request["txtCidade"];
+                radarLocation.bairro            = Request["txtBairro"];
+                radarLocation.cep               = int.Parse(Request["txtCep"]);
+                radarLocation.numero            = int.Parse(Request["txtNumero"]);
+                radarLocation.enderecoCompleto  = Request["txtEnderecoCompleto"];
+                radarLocation.viaTipo           = Request["txtTipoEst"];
                 radarLocation.Save();
 
                 Response.Redirect("/");
