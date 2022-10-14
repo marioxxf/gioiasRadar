@@ -15,17 +15,6 @@ namespace Database
         {
             return ConfigurationManager.AppSettings["sqlConn"];
         }
-
-        public void Create(string apelido)
-        {
-            using (SqlConnection connection = new SqlConnection(sqlConn()))
-            {
-                string queryString = "insert into radars (apelido, dataCriacao) values ('" + apelido + "', getdate())";
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-            }
-        }
         
         public void Create(int idRadar, string dataOcorrencia, double temperatura, string veiculoTipo, string veiculoPlaca, double veiculoVelocidade, int veiculoPassageiroQtd, int chuva, int acidente)
         {
@@ -33,7 +22,7 @@ namespace Database
             {
                 string queryString = "insert into occurrences" +
                     " (idRadar, dataOcorrencia, dataCriacao, temperatura, veiculoTipo, veiculoPlaca, veiculoVelocidade, veiculoPassageiroQtd, chuva, acidente)" +
-                    " values (" + idRadar + ", '" + dataOcorrencia + "', getdate(), '" + temperatura + "', '" + veiculoTipo + "', '" + veiculoPlaca + "'," +
+                    " values (" + idRadar + ", '" + dataOcorrencia + "', DATEADD(HOUR, -3, GETUTCDATE()), '" + temperatura + "', '" + veiculoTipo + "', '" + veiculoPlaca + "'," +
                     "'" + veiculoVelocidade + "', " + veiculoPassageiroQtd + ", " + chuva + ", " + acidente + ")";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();

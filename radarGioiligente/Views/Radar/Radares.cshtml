@@ -6,21 +6,24 @@
 
     IDictionary<int, string> radarsData = new Dictionary<int, string>();
 
-    foreach(var radar in radars)
+    string[] localidadesRadar = new string[4];
+    int iterador = 0;
+    string localizacaoRadar = "";
+    foreach (var radar in radars)
     {
         foreach (var radarLocation in radarsLocations)
         {
             if(radarLocation.idRadar == radar.idRadar)
             {
-                var localizacaoRadar = radarLocation.bairro + ", " + radarLocation.cidade + ", " + radarLocation.uf + ", 0" + radarLocation.cep;
-                radarsData.Add(radar.idRadar, localizacaoRadar);
+                radarsData.Add(radar.idRadar, radarLocation.enderecoCompleto);
+                iterador++;
             }
         }
     }
 }
 
 <div class="main">
-    <h1>Radares cadastrados</h1>
+    <h1 class="title">Radares cadastrados</h1>
     <h3>Acesse já um dos radares abaixo e colabore com a inteligência dele!</h3>
 </div>
 

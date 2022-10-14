@@ -20,7 +20,7 @@ namespace Database
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into radars (apelido, dataCriacao) values ('" + apelido + "', getdate())";
+                string queryString = "insert into radars (apelido, dataCriacao) values ('" + apelido + "', DATEADD(HOUR, -3, GETUTCDATE()))";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();

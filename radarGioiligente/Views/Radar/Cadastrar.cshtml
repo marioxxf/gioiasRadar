@@ -193,20 +193,43 @@
                             if (resultadoFinal.results[0].address_components[0].types[0] == "street_number") {
                                 document.getElementById('txtNumero').value = resultadoFinal.results[0].address_components[0].long_name;
                             }
+                            else {
+                                document.getElementById('txtNumero').value = "0";
+                            }
+
                             if (resultadoFinal.results[0].address_components[1].types[0] == "route") {
                                 document.getElementById('txtLogradouro').value = resultadoFinal.results[0].address_components[1].long_name;
                             }
+                            else {
+                                document.getElementById('txtLogradouro').value = "Não encontrado";
+                            }
+
                             if (resultadoFinal.results[0].address_components[2].types[0] == "sublocality" || resultadoFinal.results[0].address_components[2].types[0] == "sublocality_level_1") {
                                 document.getElementById('txtBairro').value = resultadoFinal.results[0].address_components[2].long_name;
                             }
+                            else {
+                                document.getElementById('txtBairro').value = "Não encontrado";
+                            }
+
                             if (resultadoFinal.results[0].address_components[3].types[0] == "administrative_area_level_2") {
                                 document.getElementById('txtCidade').value = resultadoFinal.results[0].address_components[3].long_name;
                             }
+                            else {
+                                document.getElementById('txtCidade').value = "Não encontrado";
+                            }
+
                             if (resultadoFinal.results[0].address_components[4].types[0] == "administrative_area_level_1") {
                                 document.getElementById('txtUf').value = resultadoFinal.results[0].address_components[4].short_name;
                             }
+                            else {
+                                document.getElementById('txtUf').value = "Não encontrado";
+                            }
+
                             if (resultadoFinal.results[0].address_components[6].types[0] == "postal_code") {
                                 document.getElementById('txtCep').value = resultadoFinal.results[0].address_components[6].long_name.replace("-", "");
+                            }
+                            else {
+                                document.getElementById('txtCep').value = "0";
                             }
                             document.getElementById('txtEnderecoCompleto').value = resultadoFinal.results[0].formatted_address;
                             /*console.log("Número: " + document.getElementById('txtNumero').value + "\nLogradouro: " + document.getElementById('txtLogradouro').value + "\nBairro: " + document.getElementById('txtBairro').value + "\nCidade: " + document.getElementById('txtCidade').value + "\nUF: " + document.getElementById('txtUf').value + "\nCEP: " + document.getElementById('txtCep').value + "\nEndereço completo: " + document.getElementById('txtEnderecoCompleto').value);*/
