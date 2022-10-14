@@ -54,28 +54,12 @@
 }
 
 <div class="main">
-    @if (TempData["radarCriado"] != null)
-    {
-        <br /><div id="divRadarCriado" name="divRadarCriado" class="alert alert-success">@TempData["radarCriado"]</div>
-    }
-    @if (TempData["ocorrenciaCriada"] != null)
-    {
-        <br /><div id="divOccCriada" name="divOccCriada" class="alert alert-success">@TempData["ocorrenciaCriada"] Acesse o <a href="/radar/perfil/@TempData["idPerfilDaOccCriada"]">perfil do radar</a> e veja ela na listagem atualizada.</div>
-    }
     <h1 class="title">Radar Inteligente</h1>
     <h3 class="subtitle">Veja os radares cadastrados, acesse-os e verifique as estatísticas!</h3>
 </div>
 <div id="map"></div>
 
 <script>
-    setTimeout(function () {
-        $('#divRadarCriado').fadeOut('fast');
-    }, 5000);
-
-    setTimeout(function () {
-        $('#divOccCriada').fadeOut('fast');
-    }, 15000);
-
     var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         {
             attribution: false

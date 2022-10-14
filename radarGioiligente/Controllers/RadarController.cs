@@ -49,8 +49,24 @@ namespace radarGioiligente.Controllers
                 radarLocation.uf                = Request["txtUf"];
                 radarLocation.cidade            = Request["txtCidade"];
                 radarLocation.bairro            = Request["txtBairro"];
-                radarLocation.cep               = int.Parse(Request["txtCep"]);
-                radarLocation.numero            = int.Parse(Request["txtNumero"]);
+                
+                if(Request["txtCep"] == "0" || Request["txtCep"] == "")
+                {
+                    radarLocation.cep = 0;
+                }
+                else
+                {
+                    radarLocation.cep = int.Parse(Request["txtCep"]);
+                }
+                
+                if(Request["txtNumero"] == "0" || Request["txtNumero"] == "")
+                {
+                    radarLocation.numero = 0;
+                }
+                else
+                {
+                    radarLocation.numero = int.Parse(Request["txtNumero"]);
+                }
                 radarLocation.enderecoCompleto  = Request["txtEnderecoCompleto"];
                 radarLocation.viaTipo           = Request["txtTipoEst"];
                 radarLocation.Save();

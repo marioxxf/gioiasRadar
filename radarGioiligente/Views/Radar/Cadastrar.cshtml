@@ -190,6 +190,7 @@
                         var placeId = resultado.results[0].place_id;
                         var linkRequisicaoFinal = "https://maps.googleapis.com/maps/api/geocode/json?place_id=" + placeId + "&key=AIzaSyAoNW7V7RqDhcCBPyq16bSybD87HaVUWXY";
                         $.get(linkRequisicaoFinal, function (resultadoFinal) {
+                            console.log(resultadoFinal);
                             if (resultadoFinal.results[0].address_components[0].types[0] == "street_number") {
                                 document.getElementById('txtNumero').value = resultadoFinal.results[0].address_components[0].long_name;
                             }
