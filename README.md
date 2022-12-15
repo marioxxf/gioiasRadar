@@ -1,5 +1,5 @@
 <h1>Smart Radar</h1>
-<p>System for create radars and catch your activity to found the best velocity for ride in radar's road.</p>
+<p>System powered by ASP.NET MVC, SQL Server, HTML, CSS and JavaScript for create radars and catch your activity to found the best velocity for ride in radar's road.</p>
 <h2>How it works</h2>
 <p>With Google Geolocation's API and Leaftlet library, in Smart Radar's website we can register radars and check your recommended speed to ride in the road.</p>
 <h2>State of the project</h2>
